@@ -1,19 +1,26 @@
-const beverages = document.querySelectorAll(".beverage")
-beverages.forEach(beverage => {beverage.addEventListener("click", (e) => {fieldSetOnclick(e)})})
+let orderCount = 1;
+
 const form = document.querySelector('#form');
 const addButton = document.querySelector('.add-button');
 
-function fieldSetOnclick(event){
-    if (event.target.className !== "close-button")
+function closeOnClick(event){
+    if (event.target.className !== "close-button" || orderCount <= 1)
         return;
-    event.currentTarget.remove()
+    event.target.closest('fieldset').remove();
+    orderCount--;
 }
+
+form.addEventListener('click', (e) => {closeOnClick(e)})
+
 addButton.addEventListener('click', () => {
     const number = form.querySelectorAll('fieldset.beverage').length + 1;
 
     const newFieldsetHtml = `
     <fieldset class="beverage">
         <h4 class="beverage-count">Напиток ${number}</h4>
+        <button class = "close-button">
+          x
+        </button>
         <label class="field">
           <span class="label-text">Я буду</span>
           <select>
@@ -62,5 +69,6 @@ addButton.addEventListener('click', () => {
         </div>
       </fieldset>
     `
+    orderCount++;
     addButton.closest('div').insertAdjacentHTML('beforebegin', newFieldsetHtml);
 });
