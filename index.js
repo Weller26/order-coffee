@@ -1,4 +1,5 @@
 let orderCount = 1;
+let lastOrderId = 1;
 
 const form = document.querySelector('#form');
 const addButton = document.querySelector('.add-button');
@@ -12,11 +13,10 @@ function closeOnClick(event){
 
 form.addEventListener('click', (e) => {closeOnClick(e)})
 addButton.addEventListener('click', (ev) => {
-    const number = form.querySelectorAll('fieldset.beverage').length + 1;
-
+    lastOrderId++;
     const newFieldsetHtml = `
     <fieldset class="beverage">
-        <h4 class="beverage-count">Напиток №${number}</h4>
+        <h4 class="beverage-count">Напиток №${lastOrderId}</h4>
         <button class = "close-button">
           x
         </button>
@@ -31,38 +31,38 @@ addButton.addEventListener('click', (ev) => {
         <div class="field">
           <span class="checkbox-label">Сделайте напиток на</span>
           <label class="checkbox-field">
-            <input type="radio" name="milk" value="usual" checked />
+            <input type="radio" name="milk-${lastOrderId}" value="usual" checked />
             <span>обычном молоке</span>
           </label>
           <label class="checkbox-field">
-            <input type="radio" name="milk" value="no-fat" />
+            <input type="radio" name="milk-${lastOrderId}" value="no-fat" />
             <span>обезжиренном молоке</span>
           </label>
           <label class="checkbox-field">
-            <input type="radio" name="milk" value="soy" />
+            <input type="radio" name="milk-${lastOrderId}" value="soy" />
             <span>соевом молоке</span>
           </label>
           <label class="checkbox-field">
-            <input type="radio" name="milk" value="coconut" />
+            <input type="radio" name="milk-${lastOrderId}" value="coconut" />
             <span>кокосовом молоке</span>
           </label>
         </div>
         <div class="field">
           <span class="checkbox-label">Добавьте к напитку:</span>
           <label class="checkbox-field">
-            <input type="checkbox" name="options" value="whipped cream" />
+            <input type="checkbox" name="options-${lastOrderId}" value="whipped cream" />
             <span>взбитых сливок</span>
           </label>
           <label class="checkbox-field">
-            <input type="checkbox" name="options" value="marshmallow" />
+            <input type="checkbox" name="options-${lastOrderId}" value="marshmallow" />
             <span>зефирок</span>
           </label>
           <label class="checkbox-field">
-            <input type="checkbox" name="options" value="chocolate" />
+            <input type="checkbox" name="options-${lastOrderId}" value="chocolate" />
             <span>шоколад</span>
           </label>
           <label class="checkbox-field">
-            <input type="checkbox" name="options" value="cinnamon" />
+            <input type="checkbox" name="options-${lastOrderId}" value="cinnamon" />
             <span>корицу</span>
           </label>
         </div>
