@@ -8,12 +8,12 @@ function fieldSetOnclick(event){
         return;
     event.currentTarget.remove()
 }
-addButton.addEventListener('click', () => {
+addButton.addEventListener('click', (ev) => {
     const number = form.querySelectorAll('fieldset.beverage').length + 1;
 
     const newFieldsetHtml = `
     <fieldset class="beverage">
-        <h4 class="beverage-count">Напиток ${number}</h4>
+        <h4 class="beverage-count">Напиток №${number}</h4>
         <label class="field">
           <span class="label-text">Я буду</span>
           <select>
@@ -64,3 +64,32 @@ addButton.addEventListener('click', () => {
     `
     addButton.closest('div').insertAdjacentHTML('beforebegin', newFieldsetHtml);
 });
+
+function createModalWindow() {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+
+    const modal = document.createElement('div');
+    modal.className = 'modal-window';
+
+    const closeButton = document.createElement('button');
+    closeButton.className = 'modal-close-button';
+    closeButton.innerText = `x`;
+
+    const text = document.createElement('p');
+    text.textContent = 'Заказ принят!';
+
+    closeButton.addEventListener('click', (e) => {
+        overlay.remove();
+    })
+
+    modal.append(closeButton, text);
+    overlay.append(modal);
+    document.body.append(overlay);
+}
+
+const submitButton = document.querySelector('.submit-button');
+submitButton.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    createModalWindow();
+})
