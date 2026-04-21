@@ -84,26 +84,69 @@ function createModalWindow() {
     closeButton.innerText = `x`;
 
     const text = document.createElement('p');
-    const orderCount = form.querySelectorAll('fieldset.beverage').length;
+    const fieldsets = form.querySelectorAll('fieldset.beverage');
+    const orderCountNumber = fieldsets.length;
     let declension;
-    if ([0, 5, 6, 7, 8, 9].includes(orderCount % 10)
-    || [11, 12, 13, 14].includes(orderCount % 100)) {
+    if ([0, 5, 6, 7, 8, 9].includes(orderCountNumber % 10)
+        || [11, 12, 13, 14].includes(orderCountNumber % 100)) {
         declension = 'напитков';
-    } else if (orderCount % 10 === 1) {
+    } else if (orderCountNumber % 10 === 1) {
         declension = 'напиток';
     } else {
         declension = 'напитка';
     }
-    text.textContent = `Заказ принят! Вы заказали ${orderCount} ${declension}.`;
+    text.textContent = `Заказ принят! Вы заказали ${orderCountNumber} ${declension}.`;
+
+    const tableContainer = document.createElement('div');
+
+    let tableHTML = `
+      <table class="order-table" border="1" cellpadding="5" cellspacing="0" style="margin-top: 20px; width: 100%;">
+        <thead>
+          <tr>
+            <th>Напиток</th>
+            <th>Молоко</th>
+            <th>Дополнительно</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    fieldsets.forEach(fieldset => {
+        const select = fieldset.querySelector('select');
+        const beverageName = select.options[select.selectedIndex].text;
+
+        const milkRadio = fieldset.querySelector('input[type="radio"]:checked');
+        const milkName = milkRadio ? milkRadio.nextElementSibling.textContent : '';
+
+        const optionCheckboxes = fieldset.querySelectorAll('input[type="checkbox"]:checked');
+        const optionsList = Array.from(optionCheckboxes).map(cb => cb.nextElementSibling.textContent);
+        const optionsText = optionsList.join(', ');
+
+        tableHTML += `
+          <tr>
+            <td>${beverageName}</td>
+            <td>${milkName}</td>
+            <td>${optionsText}</td>
+          </tr>
+        `;
+    });
+
+    tableHTML += `
+        </tbody>
+      </table>
+    `;
+
+    tableContainer.innerHTML = tableHTML;
 
     closeButton.addEventListener('click', (e) => {
         overlay.remove();
-    })
+    });
 
-    modal.append(closeButton, text);
+    modal.append(closeButton, text, tableContainer);
     overlay.append(modal);
     document.body.append(overlay);
 }
+
 
 const submitButton = document.querySelector('.submit-button');
 submitButton.addEventListener('click', (ev) => {
