@@ -16,7 +16,7 @@ addButton.addEventListener('click', (ev) => {
 
     const newFieldsetHtml = `
     <fieldset class="beverage">
-        <h4 class="beverage-count">Напиток ${number}</h4>
+        <h4 class="beverage-count">Напиток №${number}</h4>
         <button class = "close-button">
           x
         </button>
@@ -84,7 +84,17 @@ function createModalWindow() {
     closeButton.innerText = `x`;
 
     const text = document.createElement('p');
-    text.textContent = 'Заказ принят!';
+    const orderCount = form.querySelectorAll('fieldset.beverage').length;
+    let declension;
+    if ([0, 5, 6, 7, 8, 9].includes(orderCount % 10)
+    || [11, 12, 13, 14].includes(orderCount % 100)) {
+        declension = 'напитков';
+    } else if (orderCount % 10 === 1) {
+        declension = 'напиток';
+    } else {
+        declension = 'напитка';
+    }
+    text.textContent = `Заказ принят! Вы заказали ${orderCount} ${declension}.`;
 
     closeButton.addEventListener('click', (e) => {
         overlay.remove();
@@ -99,4 +109,4 @@ const submitButton = document.querySelector('.submit-button');
 submitButton.addEventListener('click', (ev) => {
     ev.preventDefault();
     createModalWindow();
-})
+});
